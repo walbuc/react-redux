@@ -1,9 +1,6 @@
 import { createReducer } from "common/utils/reducerUtils";
-
 import orm from "app/orm";
-
 import { DATA_LOADED } from "features/tools/toolConstants";
-
 const initialState = orm.getEmptyState();
 
 export function loadData(state, payload) {
@@ -33,14 +30,3 @@ export function loadData(state, payload) {
 export default createReducer(initialState, {
   [DATA_LOADED]: loadData
 });
-
-// combineReducers({
-//   pilots: pilotsReducer,
-//   mechs: mechsReducer,
-//
-// })
-//
-// pilotsReducer(initialState, {
-//   [PILOTS_LOADED]: loadData,
-//  [PILOT_UPDATEED]: updatePilot,
-// });
