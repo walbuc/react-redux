@@ -2,12 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { Table } from "semantic-ui-react";
 
-import orm from "app/orm";
-
+import {getEntitiesSession} from "features/entities/entitySelectors";
 import { getWeightClass } from "../mechsSelectors";
 
 const mapState = (state, ownProps) => {
-  const session = orm.session(state.entities);
+  const session = getEntitiesSession(state)
   const { Mech } = session;
 
   let mech;
@@ -19,12 +18,16 @@ const mapState = (state, ownProps) => {
       // Copy the data from the plain JS object
       ...mechModel.ref,
       // Provide a default empty object for the relation
-      mechType: {}
+      mechType: {},
+      pilot: {}
     };
 
     if (mechModel.type) {
       // Replace the default object with a copy of the relation's data
       mech.mechType = { ...mechModel.type.ref };
+    }
+    if( mechModel.pilot ) {
+      mech.pilot = { ...mechModel.pilot.ref };
     }
   }
 
@@ -32,9 +35,10 @@ const mapState = (state, ownProps) => {
 };
 
 export const MechsListRow = ({ mech, onMechClicked, selected }) => {
-  const { id = null, type = "", mechType = {} } = mech;
+  const { id = null, type = "", mechType = {}, pilot = {} } = mech;
 
   const { name = "", weight = "" } = mechType;
+
 
   const weightClass = getWeightClass(weight);
 
@@ -45,6 +49,7 @@ export const MechsListRow = ({ mech, onMechClicked, selected }) => {
       <Table.Cell>{type}</Table.Cell>
       <Table.Cell>{weight}</Table.Cell>
       <Table.Cell>{weightClass}</Table.Cell>
+      <Table.Cell>{pilot.name}</Table.Cell>
     </Table.Row>
   );
 };

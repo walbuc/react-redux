@@ -2,16 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 import { Form } from "semantic-ui-react";
 
-import orm from "app/orm";
-
+import {getEntitiesSession} from "features/entities/entitySelectors";
 import { getWeightClass, selectCurrentMech } from "./mechsSelectors";
 
 const mapState = state => {
   let mech;
 
   const currentMech = selectCurrentMech(state);
-
-  const session = orm.session(state.entities);
+  const session = getEntitiesSession(state);
   const { Mech } = session;
 
   if (Mech.hasId(currentMech)) {
